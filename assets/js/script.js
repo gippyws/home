@@ -23,4 +23,30 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         });
     }
+
+    // Web3Forms AJAX and success message logic
+    var form = document.getElementById('contact-form');
+    var success = document.getElementById('form-success');
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            var formData = new FormData(form);
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.success) {
+                    form.classList.add('d-none');
+                    if (success) success.classList.remove('d-none');
+                } else {
+                    alert('There was an error sending your message. Please try again.');
+                }
+            })
+            .catch(function() {
+                alert('There was an error sending your message. Please try again.');
+            });
+        });
+    }
 });
