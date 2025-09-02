@@ -90,15 +90,63 @@
             <h2 class="text-center mb-5">Get Your Free Quote</h2>
             <div class="row">
                 <div class="col-md-8 mx-auto">
-                    <form>
-                        <div class="row">
-                            <div class="col-md-6 mb-3"><input type="text" class="form-control" placeholder="Full Name *" required></div>
-                            <div class="col-md-6 mb-3"><input type="email" class="form-control" placeholder="Email Address *" required></div>
+                        <div id="form-success" class="alert alert-success d-none text-center" role="alert">
+                            Thank you! Your message has been sent successfully.
                         </div>
-                        <div class="mb-3"><input type="text" class="form-control" placeholder="Phone Number"></div>
-                        <div class="mb-3"><textarea class="form-control" rows="5" placeholder="Tell us about your project"></textarea></div>
-                        <div class="text-center"><button type="submit" class="btn btn-primary">Request Free Quote</button></div>
-                    </form>
+                        <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+                            <!-- Replace with your Access Key -->
+                            <input type="hidden" name="access_key" value="16296fe6-4074-4ddd-9c6b-89734458eedc">
+                            <!-- Optional: Custom subject -->
+                            <input type="hidden" name="subject" value="New Quote Request from Website">
+                            <!-- Honeypot Spam Protection -->
+                            <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <input type="text" class="form-control" name="name" placeholder="Full Name *" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <input type="email" class="form-control" name="email" placeholder="Email Address *" required>
+                                </div>
+                            </div>
+                            <div class="mb-3">
+                                <input type="text" class="form-control" name="phone" placeholder="Phone Number">
+                            </div>
+                            <div class="mb-3">
+                                <textarea class="form-control" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">Request Free Quote</button>
+                            </div>
+                        </form>
+                        <script>
+                        // Show success message and hide form on successful Web3Forms submission
+                        document.addEventListener('DOMContentLoaded', function() {
+                            var form = document.getElementById('contact-form');
+                            var success = document.getElementById('form-success');
+                            if (form) {
+                                form.addEventListener('submit', function(e) {
+                                    e.preventDefault();
+                                    var formData = new FormData(form);
+                                    fetch(form.action, {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                    .then(function(response) { return response.json(); })
+                                    .then(function(data) {
+                                        if (data.success) {
+                                            form.classList.add('d-none');
+                                            success.classList.remove('d-none');
+                                        } else {
+                                            alert('There was an error sending your message. Please try again.');
+                                        }
+                                    })
+                                    .catch(function() {
+                                        alert('There was an error sending your message. Please try again.');
+                                    });
+                                });
+                            }
+                        });
+                        </script>
                 </div>
             </div>
         </div>
