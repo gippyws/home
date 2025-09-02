@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://gippywebservices.com.au/sitemap.xml
