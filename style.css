@@ -63,3 +63,12 @@ footer.bg-dark {
 .text-primary {
     color: #007bff !important;
 }
+
+.navbar {
+    transition: top 0.7s cubic-bezier(0.4,0,0.2,1); /* Slow, smooth transition */
+}
+
+.navbar-brand img {
+  height: 100%;
+  max-height: 60px; /* Optional: prevent it from getting too large */
+}
