@@ -19,12 +19,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (headline) {
                 headline.textContent = content.headline;
                 // Add editable attribute for visual editor
-                headline.setAttribute('data-blok-c', JSON.stringify({id: storyblokId, component: 'page', field: 'headline'}));
+                headline.setAttribute('data-blok-c', `${content._uid}:headline`);
+                headline.setAttribute('data-blok-uid', `${content._uid}-headline`);
             }
             if (bodyText) {
                 bodyText.textContent = content.body_text;
                 // Add editable attribute for visual editor
-                bodyText.setAttribute('data-blok-c', JSON.stringify({id: storyblokId, component: 'page', field: 'body_text'}));
+                bodyText.setAttribute('data-blok-c', `${content._uid}:body_text`);
+                bodyText.setAttribute('data-blok-uid', `${content._uid}-body_text`);
             }
             
             // Update hero background image from Storyblok
