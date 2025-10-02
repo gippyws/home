@@ -16,8 +16,16 @@ document.addEventListener('DOMContentLoaded', function() {
             const headline = document.getElementById('headline');
             const bodyText = document.getElementById('body-text');
             
-            if (headline) headline.textContent = content.headline;
-            if (bodyText) bodyText.textContent = content.body_text; // Use .innerHTML if you have rich text
+            if (headline) {
+                headline.textContent = content.headline;
+                // Add editable attribute for visual editor
+                headline.setAttribute('data-blok-c', JSON.stringify({id: storyblokId, component: 'page', field: 'headline'}));
+            }
+            if (bodyText) {
+                bodyText.textContent = content.body_text;
+                // Add editable attribute for visual editor
+                bodyText.setAttribute('data-blok-c', JSON.stringify({id: storyblokId, component: 'page', field: 'body_text'}));
+            }
             
             // Update hero background image from Storyblok
             if (content.main_image && content.main_image.filename) {
