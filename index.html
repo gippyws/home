@@ -4,12 +4,12 @@
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://app.storyblok.com;
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com;
         style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com;
-        img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au https://a.storyblok.com;
+        img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au;
         font-src 'self' https://cdnjs.cloudflare.com;
-        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com https://api.storyblok.com https://cdn.jsdelivr.net https://app.storyblok.com https://unpkg.com;
-        frame-ancestors 'self' https://app.storyblok.com;
+        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com;
+        frame-ancestors 'self';
         object-src 'none';
     ">
     <meta charset="UTF-8">
@@ -19,14 +19,6 @@
     <meta name="keywords" content="web development, Gippsland, small business, brochure websites, website design, local SEO, website maintenance">
     <meta name="author" content="Gippy Web Services">
     <link rel="canonical" href="https://gippywebservices.com.au/">
-
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-TM5745TV');</script>
-    <!-- End Google Tag Manager -->
 
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
@@ -47,10 +39,9 @@
     <meta name="twitter:title" content="Gippy Web Services - Web Development Gippsland">
     <meta name="twitter:description" content="Professional, affordable web development and brochure websites for small businesses in Gippsland.">
     <meta name="twitter:image" content="https://gippywebservices.com.au/media/logo-long.png">
+    
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./media/favicon.png">
-
-    <script src="https://app.storyblok.com/f/storyblok-v2-latest.js"></script>
 
         <!-- Structured Data: LocalBusiness JSON-LD -->
         <script type="application/ld+json">
@@ -98,7 +89,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="#"><img src="./media/logo-long.png" alt="Gippy Web Services - Gippsland web development logo" style="height: 80px"></a>
+            <a class="navbar-brand" href="./index.html"><img src="./media/logo-long.png" alt="Gippy Web Services - Gippsland web development logo"></a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -113,17 +104,16 @@
         </div>
     </nav>
 
-    <main id="page-content">
-        <header id="home" class="hero-section text-white text-center">
-            <div class="container">
-                <h1 id ="headline" class="display-4 animate__animated animate__fadeInDown">Loading</h1>
-                <p id="body-text" class="lead animate__animated animate__fadeInUp">Loading...</p>
-                <a href="#contact" class="btn btn-primary btn-lg animate__animated animate__pulse">Get a Free Quote</a>
-                <a href="#services" class="btn btn-secondary btn-lg">Our Services</a>
-            </div>
-        </header>
+    <header id="home" class="hero-section text-white text-center">
+        <div class="container">
+            <h1 class="display-4 animate__animated animate__fadeInDown">Professional Websites for Small Businesses</h1>
+            <p class="lead animate__animated animate__fadeInUp">Gippy Web Services specialises in creating beautiful, functional, and affordable brochure websites for the local Gippsland community.</p>
+            <a href="#contact" class="btn btn-primary btn-lg animate__animated animate__pulse">Get a Free Quote</a>
+            <a href="#services" class="btn btn-secondary btn-lg">Our Services</a>
+        </div>
+    </header>
 
-        <section id="services" class="py-5" data-aos="fade-up">
+    <section id="services" class="py-5" data-aos="fade-up">
         <div class="container text-center">
             <h2 class="mb-5">Our Services</h2>
             <div class="row">
@@ -187,14 +177,14 @@
                             <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" name="name" placeholder="Full Name *" required autocomplete="name">
+                                    <input type="text" class="form-control" name="name" placeholder="Full Name *" required>
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <input type="email" class="form-control" name="email" placeholder="Email Address *" required autocomplete="email">
+                                    <input type="email" class="form-control" name="email" placeholder="Email Address *" required>
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="phone" placeholder="Phone Number" autocomplete="tel">
+                                <input type="text" class="form-control" name="phone" placeholder="Phone Number">
                             </div>
                             <div class="mb-3">
                                 <textarea class="form-control" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
@@ -208,7 +198,6 @@
             </div>
         </div>
     </section>
-    </main>
 
     <footer class="bg-dark text-white py-4">
         <div class="container">
@@ -250,6 +239,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="./assets/js/script.js"></script>
-    <script src="./assets/js/storyblok-connector.js" defer></script>
 </body>
 </html>
