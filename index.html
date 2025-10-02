@@ -8,8 +8,8 @@
         style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com;
         img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au https://a.storyblok.com;
         font-src 'self' https://cdnjs.cloudflare.com;
-        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com https://api.storyblok.com https://cdn.jsdelivr.net;
-        frame-ancestors 'self';
+        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com https://api.storyblok.com https://cdn.jsdelivr.net https://app.storyblok.com;
+        frame-ancestors 'self' https://app.storyblok.com;
         object-src 'none';
     ">
     <meta charset="UTF-8">
@@ -183,14 +183,14 @@
                             <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <input type="text" class="form-control" name="name" placeholder="Full Name *" required>
+                                    <input type="text" class="form-control" name="name" placeholder="Full Name *" required autocomplete="name">
                                 </div>
                                 <div class="col-md-6 mb-3">
-                                    <input type="email" class="form-control" name="email" placeholder="Email Address *" required>
+                                    <input type="email" class="form-control" name="email" placeholder="Email Address *" required autocomplete="email">
                                 </div>
                             </div>
                             <div class="mb-3">
-                                <input type="text" class="form-control" name="phone" placeholder="Phone Number">
+                                <input type="text" class="form-control" name="phone" placeholder="Phone Number" autocomplete="tel">
                             </div>
                             <div class="mb-3">
                                 <textarea class="form-control" name="message" rows="5" placeholder="Tell us about your project" required></textarea>
