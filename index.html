@@ -4,11 +4,11 @@
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="
         default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com;
+        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://app.storyblok.com;
         style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com;
-        img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au;
+        img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au https://a.storyblok.com;
         font-src 'self' https://cdnjs.cloudflare.com;
-        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com;
+        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com https://api.storyblok.com https://cdn.jsdelivr.net;
         frame-ancestors 'self';
         object-src 'none';
     ">
@@ -106,16 +106,17 @@
         </div>
     </nav>
 
-    <header id="home" class="hero-section text-white text-center">
-        <div class="container">
-            <h1 id ="headline" class="display-4 animate__animated animate__fadeInDown">Loading</h1>
-            <p id="body-text" class="lead animate__animated animate__fadeInUp">Loading...</p>
-            <a href="#contact" class="btn btn-primary btn-lg animate__animated animate__pulse">Get a Free Quote</a>
-            <a href="#services" class="btn btn-secondary btn-lg">Our Services</a>
-        </div>
-    </header>
+    <main id="page-content">
+        <header id="home" class="hero-section text-white text-center">
+            <div class="container">
+                <h1 id ="headline" class="display-4 animate__animated animate__fadeInDown">Loading</h1>
+                <p id="body-text" class="lead animate__animated animate__fadeInUp">Loading...</p>
+                <a href="#contact" class="btn btn-primary btn-lg animate__animated animate__pulse">Get a Free Quote</a>
+                <a href="#services" class="btn btn-secondary btn-lg">Our Services</a>
+            </div>
+        </header>
 
-    <section id="services" class="py-5" data-aos="fade-up">
+        <section id="services" class="py-5" data-aos="fade-up">
         <div class="container text-center">
             <h2 class="mb-5">Our Services</h2>
             <div class="row">
@@ -200,6 +201,7 @@
             </div>
         </div>
     </section>
+    </main>
 
     <footer class="bg-dark text-white py-4">
         <div class="container">
@@ -241,6 +243,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="./assets/js/script.js"></script>
-    <script src="storyblok-connector.js" defer></script>
+    <script src="./assets/js/storyblok-connector.js" defer></script>
 </body>
 </html>
