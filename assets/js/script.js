@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // JavaScript for showing/hiding navbar on scroll
     let lastScrollTop = 0;
-    const navbar = document.querySelector('.navbar');
+    const navbar = document.querySelector('.navbar.navbar-hide');
 
     if (navbar) {
         window.addEventListener('scroll', function() {

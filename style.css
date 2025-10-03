@@ -14,6 +14,20 @@ body {
     padding: 250px 0 200px;
 }
 
+.pricing-divider {
+    height: 60px; /* Adjust height as needed */
+    background-color: #121212; /* Match the body background color */
+}
+
+.pricing-section {
+    padding-top: 80px;
+    padding-bottom: 50px;
+}
+
+.card-body > ul {
+    line-height: 2;
+}
+
 .service-item {
     background-color: #1e1e1e;
     padding: 30px;
