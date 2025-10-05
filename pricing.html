@@ -42,6 +42,10 @@
     
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="./media/favicon.png">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="./media/logo-long.png" as="image">
+    <link rel="preload" href="./style.css" as="style">
 
         <!-- Structured Data: LocalBusiness JSON-LD -->
         <script type="application/ld+json">
@@ -80,11 +84,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 </head>
-<body>
+<body class="pt-5"> <!-- Bootstrap's pt-5 provides ~3rem padding-top -->
 
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TM5745TV"
-    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    height="0" width="0" class="gtm-hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
@@ -98,16 +102,14 @@
                     <li class="nav-item"><a class="nav-link" href="./index.html#home">Home</a></li>
                     <li class="nav-item"><a class="nav-link" href="./index.html#services">Services</a></li>
                     <li class="nav-item"><a class="nav-link" href="./index.html#about">About</a></li>
-                    <li class="nav-item"><a class="nav-link" href="./index.html#contact">Contact</a></li>
                     <li class="nav-item"><a class="nav-link" href="./pricing.html">Pricing</a></li>
+                    <li class="nav-item"><a class="nav-link" href="./index.html#contact">Contact</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="pricing-divider"></div>
-
-    <header id="pricing" class="pricing-heading" data-aos="fade-up">
+    <header id="pricing" class="pricing-heading">
         <div class="container">
             <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
                 <h1 class="display-4 fw-normal">Pricing Packages</h1>
@@ -123,11 +125,12 @@
     <section class="pricing-section">
 
     <div class="container py-4" data-aos="fade-up">
+        <h2 class="visually-hidden">Main Pricing Packages</h2>
         <div class="row row-cols-1 row-cols-md-3 mb-3 text-center h-100">
             <div class="col d-flex">
                 <div class="card mb-4 rounded-3 shadow-sm flex-fill">
                     <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Get Online Fast</h4>
+                        <h3 class="my-0 fw-normal">Get Online Fast</h3>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <h1 class="card-title pricing-card-title">$799</h1>
@@ -146,7 +149,7 @@
             <div class="col d-flex">
                 <div class="card mb-4 rounded-3 shadow-sm flex-fill">
                     <div class="card-header py-3">
-                        <h4 class="my-0 fw-normal">Online Presence</h4>
+                        <h3 class="my-0 fw-normal">Online Presence</h3>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <h1 class="card-title pricing-card-title">$1499</h1>
@@ -168,7 +171,7 @@
             <div class="col d-flex">
                 <div class="card mb-4 rounded-3 shadow-sm border-secondary flex-fill">
                     <div class="card-header py-3 text-bg-secondary border-secondary">
-                        <h4 class="my-0 fw-normal">Web Hosting and Services</h4>
+                        <h3 class="my-0 fw-normal">Web Hosting and Services</h3>
                     </div>
                     <div class="card-body d-flex flex-column">
                         <h1 class="card-title pricing-card-title">
@@ -195,7 +198,7 @@
     <div class="container py-4 col-lg-10" data-aos="fade-up">
         <div class="card mb-4 rounded-3 shadow-sm border-secondary">
             <div class="card-header py-3 text-bg-secondary border-secondary">
-                <h4 class="my-0 fw-normal text-center">Content Management Package</h4>
+                <h3 class="my-0 fw-normal text-center">Content Management Package</h3>
             </div>
             <div class="card-header py-3 text-bg-dark-subtle border-0">
                 <h4 class="my-0 fw-normal text-center">$200 Initial Set Up + $20 /month</h4>
@@ -204,9 +207,8 @@
                 <div class="row align-items-center">
                     <div class="col-lg-4 text-center mb-4 mb-lg-0">
                         <img src="./media/cms-pic2.png" 
-                             alt="Content Management System Interface" 
-                             class="img-fluid rounded shadow-sm" 
-                             style="max-height: 400px; object-fit: cover;">
+                             alt="Visual content management system dashboard showing drag-and-drop editing interface" 
+                             class="img-fluid rounded shadow-sm cms-image">
                     </div>
 
                     <div class="col-lg-4 text-center p-4 mb-4 mb-lg-0">
@@ -316,9 +318,7 @@
                 <a href="./index.html#contact" class="btn btn-secondary btn-lg mt-3">Contact Us</a>
             </div>
         </div>
-
-    
-
+    </div>
 
 </main>
 
@@ -335,10 +335,11 @@
             <div class="col-md-2">
                 <h5>Quick Links</h5>
                 <ul class="list-unstyled">
-                    <li><a href="#home" class="text-white">Home</a></li>
-                    <li><a href="#services" class="text-white">Services</a></li>
-                    <li><a href="#about" class="text-white">About</a></li>
-                    <li><a href="#contact" class="text-white">Contact</a></li>
+                    <li><a href="./index.html#home" class="text-white">Home</a></li>
+                    <li><a href="./index.html#services" class="text-white">Services</a></li>
+                    <li><a href="./index.html#about" class="text-white">About</a></li>
+                    <li><a href="./pricing.html" class="text-white">Pricing</a></li>
+                    <li><a href="./index.html#contact" class="text-white">Contact</a></li>
                 </ul>
             </div>
             <div class="col-md-3">

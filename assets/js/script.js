@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
         AOS.init();
     }
 
-    // JavaScript for showing/hiding navbar on scroll
+    /* JavaScript for showing/hiding navbar on scroll
     let lastScrollTop = 0;
     const navbar = document.querySelector('.navbar.navbar-hide');
 
@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
             lastScrollTop = scrollTop <= 0 ? 0 : scrollTop; // For Mobile or negative scrolling
         });
     }
+        */
 
     // Web3Forms AJAX and success message logic
     var form = document.getElementById('contact-form');
@@ -50,3 +51,4 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+

@@ -4,6 +4,7 @@ html, body {
 
 body {
     font-family: 'Arial', sans-serif;
+    font-display: swap;
     background-color: #121212;
     color: #ffffff;
 }
@@ -11,16 +12,11 @@ body {
 .hero-section {
     background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80') no-repeat center center;
     background-size: cover;
-    padding: 250px 0 200px;
-}
-
-.pricing-divider {
-    height: 60px; /* Adjust height as needed */
-    background-color: #121212; /* Match the body background color */
+    padding: 200px 0 200px;
 }
 
 .pricing-heading {
-    padding-top: 80px;
+    padding-top: 50px;
     padding-bottom: 50px;
 }
 
@@ -91,9 +87,12 @@ footer.bg-dark {
     color: #007bff !important;
 }
 
+
+/* Navbar transition for hiding/showing on scroll
 .navbar {
-    transition: top 0.7s cubic-bezier(0.4,0,0.2,1); /* Slow, smooth transition */
+    transition: top 0.7s cubic-bezier(0.4,0,0.2,1); 
 }
+*/
 
 .navbar-brand img {
   height: 100%;
@@ -104,4 +103,19 @@ footer.bg-dark {
 .pricing-card-title {
     font-size: 2.5rem;
     font-weight: 300;
+}
+
+/* Utility classes for inline style removal */
+.cms-image {
+    max-height: 400px; 
+    object-fit: cover;
+}
+
+.hidden-botcheck {
+    display: none;
+}
+
+.gtm-hidden {
+    display: none;
+    visibility: hidden;
 }

@@ -1,3 +1,19 @@
+# Robots.txt for Gippy Web Services
+# Updated: October 2025
+
+# Allow all crawlers access to all content
 User-agent: *
 Allow: /
+
+# Block access to sensitive or unnecessary files
+Disallow: /assets/js/
+Disallow: /*.psd$
+
+# Crawl-delay for courtesy (optional)
+# Crawl-delay: 1
+
+# Sitemap location
 Sitemap: https://gippywebservices.com.au/sitemap.xml
+
+# Additional sitemaps (if any in future)
+# Sitemap: https://gippywebservices.com.au/sitemap-images.xml
