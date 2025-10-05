@@ -29,13 +29,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // No additional JavaScript needed as form submits normally to Web3Forms
     // which then redirects to thanks.html
 
-    // If you're using fetch for form submission, make sure it includes proper headers
-fetch('https://api.web3forms.com/submit', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(formData)
-})
+    /* If you're using fetch for form submission, make sure it includes proper headers
+        fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData)
+    });
+}); */
 });
 
