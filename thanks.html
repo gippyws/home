@@ -3,14 +3,14 @@
 <head>
     <!-- Content Security Policy -->
     <meta http-equiv="Content-Security-Policy" content="
-        default-src 'self';
-        script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.google-analytics.com https://googleads.g.doubleclick.net https://www.googleadservices.com;
-        style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com;
-        img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au https://www.google.com https://www.google.com.au https://www.googleadservices.com https://googleads.g.doubleclick.net https://pagead2.googlesyndication.com;
-        font-src 'self' https://cdnjs.cloudflare.com;
-        connect-src 'self' https://api.web3forms.com https://www.google-analytics.com https://www.googletagmanager.com https://www.google.com https://cdn.jsdelivr.net;
-        frame-src https://www.googletagmanager.com;
-        object-src 'none';
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://unpkg.com https://cdnjs.cloudflare.com https://www.googletagmanager.com https://www.googleadservices.com https://www.google.com https://pagead2.googlesyndication.com https://googleads.g.doubleclick.net https://*.googletagmanager.com https://googletagmanager.com https://tagmanager.google.com https://www.google-analytics.com;
+    style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://cdnjs.cloudflare.com https://unpkg.com https://googletagmanager.com https://tagmanager.google.com https://fonts.googleapis.com;
+    img-src 'self' data: https://images.unsplash.com https://gippywebservices.com.au https://www.googletagmanager.com https://googleads.g.doubleclick.net https://www.google.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://google.com https://www.google.<TLD> https://*.google-analytics.com https://*.googletagmanager.com https://googletagmanager.com https://ssl.gstatic.com https://www.gstatic.com https://www.google.com.au;
+    font-src 'self' https://cdnjs.cloudflare.com https://fonts.gstatic.com data:;
+    connect-src 'self' https://api.web3forms.com https://google.com https://www.google.com https://www.google-analytics.com https://pagead2.googlesyndication.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://www.google.<TLD> https://*.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.googletagmanager.com https://cdn.jsdelivr.net;
+    frame-src https://www.googletagmanager.com;
+    object-src 'none';
     ">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
