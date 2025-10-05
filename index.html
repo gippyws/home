@@ -170,14 +170,13 @@
             <h2 class="text-center mb-5">Get Your Free Quote</h2>
             <div class="row">
                 <div class="col-md-8 mx-auto">
-                        <div id="form-success" class="alert alert-success d-none text-center" role="alert">
-                            Thank you! Your message has been sent successfully.
-                        </div>
                         <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
                             <!-- Replace with your Access Key -->
                             <input type="hidden" name="access_key" value="16296fe6-4074-4ddd-9c6b-89734458eedc">
                             <!-- Optional: Custom subject -->
                             <input type="hidden" name="subject" value="New Quote Request from Website">
+                            <!-- Custom URL -->
+                            <input type="hidden" name="redirect" value="https://gippywebservices.com.au/thanks.html">
                             <!-- Honeypot Spam Protection -->
                             <input type="checkbox" name="botcheck" class="hidden-botcheck" aria-hidden="true" tabindex="-1">
                             <div class="row">
