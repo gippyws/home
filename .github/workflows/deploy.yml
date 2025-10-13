@@ -1,0 +1,50 @@
+name: Deploy to SiteGround 🚀
+
+on:
+  push:
+    branches:
+      - main # Trigger the workflow on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      # ----------------------------------------------------
+      # ⚠️ IMPORTANT: Build/Compile assets before this step
+      # If your project requires a build (e.g., React, Vue, SCSS):
+      # - name: Setup Node
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: '20'
+      # - name: Install Dependencies
+      #   run: npm install
+      # - name: Build Project
+      #   run: npm run build
+      # ----------------------------------------------------
+
+      - name: 📦 Deploy via SSH/Rsync
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          # SiteGround requires port 18765
+          host: ${{ secrets.SG_HOST }}
+          username: ${{ secrets.SG_USERNAME }}
+          key: ${{ secrets.SG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
+          port: 18765
+          
+          # Use rsync to transfer only changed files for efficiency
+          # SOURCE: The path in your GitHub repo to deploy (e.g., 'dist/' or just '.')
+          # TARGET: The path on your SiteGround server (e.g., 'public_html/')
+          source: "." 
+          target: "www/gippywebservcies.com.au/public_html" 
+          
+          # rsync arguments for quiet, recursive, delete-after-transfer
+          # The 'delete' argument removes files on the server that are not in the repo
+          args: "-avz --delete"
+          
+      - name: ✅ Deployment Successful
+        run: echo "Deployment to SiteGround finished!"
