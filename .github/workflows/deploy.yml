@@ -27,24 +27,21 @@ jobs:
       # ----------------------------------------------------
 
       - name: 📦 Deploy via SSH/Rsync
-        uses: appleboy/ssh-action@v1.0.3
+        uses: easingthemes/ssh-deploy@main  # <--- CHANGED ACTION
         with:
-          # SiteGround requires port 18765
-          host: ${{ secrets.SG_HOST }}
-          username: ${{ secrets.SG_USERNAME }}
-          key: ${{ secrets.SG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
-          port: 18765
+          # SSH details
+          SSH_PRIVATE_KEY: ${{ secrets.SG_PRIVATE_KEY }}
+          SSH_PASSPHRASE: ${{ secrets.SG_KEY_PASSPHRASE }} # Required for your SiteGround key
+          REMOTE_HOST: ${{ secrets.SG_HOST }}
+          REMOTE_USER: ${{ secrets.SG_USERNAME }}
+          REMOTE_PORT: 18765 # SiteGround's custom SSH port
           
-          # Use rsync to transfer only changed files for efficiency
-          # SOURCE: The path in your GitHub repo to deploy (e.g., 'dist/' or just '.')
-          # TARGET: The path on your SiteGround server (e.g., 'public_html/')
-          source: "." 
-          target: "www/gippywebservcies.com.au/public_html" 
+          # Deployment paths
+          SOURCE: "." 
+          TARGET: "www/gippywebservcies.com.au/public_html" 
           
-          # rsync arguments for quiet, recursive, delete-after-transfer
-          # The 'delete' argument removes files on the server that are not in the repo
-          args: "-avz --delete"
+          # rsync arguments
+          ARGS: "-avz --delete"
           
       - name: ✅ Deployment Successful
         run: echo "Deployment to SiteGround finished!"
