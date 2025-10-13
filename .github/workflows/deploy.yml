@@ -26,8 +26,7 @@ jobs:
       # ----------------------------------------------------
 
       # ----------------------------------------------------
-      # 1. SETUP SSH KEY AND AGENT (FINAL PASSPHRASE-FREE FIX)
-      # This is the stable script for key loading.
+      # 1. SETUP SSH KEY AND AGENT (PASSPHRASE-FREE FIX)
       # ----------------------------------------------------
       - name: Setup SSH Key and Start Agent
         run: |
@@ -51,13 +50,14 @@ jobs:
         run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
 
       # ----------------------------------------------------
-      # 3. DEPLOY using rsync over SSH
+      # 3. DEPLOY using rsync over SSH (FINAL PATH FIX)
       # ----------------------------------------------------
       - name: 📦 Deploy via Rsync over SSH
         run: |
           # Define variables for clarity
           SOURCE_DIR="./"  # If you build, change this to your build folder (e.g., 'dist/')
-          TARGET_DIR="www/gippywebservcies.com.au/public_html" 
+          # 🚨 CRITICAL FIX: Use the full absolute path from SiteGround's SSH Credentials 🚨
+          TARGET_DIR="/home/${{ secrets.SG_USERNAME }}/www/gippywebservcies.com.au/public_html" 
           HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
 
           # Execute rsync command
