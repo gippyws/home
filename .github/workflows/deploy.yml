@@ -26,34 +26,32 @@ jobs:
       # ----------------------------------------------------
 
       # ----------------------------------------------------
-      # 1. SETUP SSH KEY AND AGENT (FIXED to create directory and handle passphrase)
+      # 1. SETUP SSH KEY AND AGENT (FINAL PASSPHRASE-FREE FIX)
+      # This is the stable script for key loading.
       # ----------------------------------------------------
       - name: Setup SSH Key and Start Agent
         run: |
           # 1. Start the ssh-agent process
           eval "$(ssh-agent -s)"
           
-          # 2. FIX: Create the .ssh directory if it doesn't exist (Fixes "No such file or directory")
+          # 2. Create the .ssh directory and set permissions
           mkdir -p ~/.ssh 
           
           # 3. Write the private key content to a file with correct permissions
           echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          # 4. Use ssh-add to load the key, piping the passphrase for secure input
-          echo "Loading key with passphrase..."
-          echo "${{ secrets.SG_KEY_PASSPHRASE }}" | ssh-add ~/.ssh/id_rsa
+          # 4. Load the passphrase-free key into the agent
+          ssh-add ~/.ssh/id_rsa
           
       # ----------------------------------------------------
       # 2. Add SiteGround's Host Key to the runner's known hosts
-      # Prevents "Host key verification failed" errors.
       # ----------------------------------------------------
       - name: Add SiteGround to known_hosts
         run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
 
       # ----------------------------------------------------
       # 3. DEPLOY using rsync over SSH
-      # rsync is used for efficient file transfer (only sends changes).
       # ----------------------------------------------------
       - name: 📦 Deploy via Rsync over SSH
         run: |
@@ -64,7 +62,7 @@ jobs:
 
           # Execute rsync command
           rsync -avz --delete \
-            -e "ssh -p 18765" \
+            -e "ssh -p 18765 -o StrictHostKeyChecking=no" \
             "${SOURCE_DIR}" \
             "${HOST}:${TARGET_DIR}"
 
