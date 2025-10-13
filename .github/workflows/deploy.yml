@@ -8,14 +8,13 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
       # ----------------------------------------------------
-      # ⚠️ IMPORTANT: Build/Compile assets before this step
-      # If your project requires a build (e.g., React, Vue, SCSS):
+      # ⚠️ IMPORTANT: Uncomment and configure if your project needs building 
       # - name: Setup Node
       #   uses: actions/setup-node@v4
       #   with:
@@ -26,25 +25,48 @@ jobs:
       #   run: npm run build
       # ----------------------------------------------------
 
-      - name: 📦 Deploy via SSH/Rsync
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          # SiteGround requires port 18765
-          host: ${{ secrets.SG_HOST }}
-          username: ${{ secrets.SG_USERNAME }}
-          key: ${{ secrets.SG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
-          port: 18765
+      # ----------------------------------------------------
+      # 1. SETUP SSH KEY AND AGENT (FIXED to create directory and handle passphrase)
+      # ----------------------------------------------------
+      - name: Setup SSH Key and Start Agent
+        run: |
+          # 1. Start the ssh-agent process
+          eval "$(ssh-agent -s)"
           
-          # Use rsync to transfer only changed files for efficiency
-          # SOURCE: The path in your GitHub repo to deploy (e.g., 'dist/' or just '.')
-          # TARGET: The path on your SiteGround server (e.g., 'public_html/')
-          source: "." 
-          target: "www/gippywebservcies.com.au/public_html" 
+          # 2. FIX: Create the .ssh directory if it doesn't exist (Fixes "No such file or directory")
+          mkdir -p ~/.ssh 
           
-          # rsync arguments for quiet, recursive, delete-after-transfer
-          # The 'delete' argument removes files on the server that are not in the repo
-          args: "-avz --delete"
+          # 3. Write the private key content to a file with correct permissions
+          echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
           
+          # 4. Use ssh-add to load the key, piping the passphrase for secure input
+          echo "Loading key with passphrase..."
+          echo "${{ secrets.SG_KEY_PASSPHRASE }}" | ssh-add ~/.ssh/id_rsa
+          
+      # ----------------------------------------------------
+      # 2. Add SiteGround's Host Key to the runner's known hosts
+      # Prevents "Host key verification failed" errors.
+      # ----------------------------------------------------
+      - name: Add SiteGround to known_hosts
+        run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
+
+      # ----------------------------------------------------
+      # 3. DEPLOY using rsync over SSH
+      # rsync is used for efficient file transfer (only sends changes).
+      # ----------------------------------------------------
+      - name: 📦 Deploy via Rsync over SSH
+        run: |
+          # Define variables for clarity
+          SOURCE_DIR="./"  # If you build, change this to your build folder (e.g., 'dist/')
+          TARGET_DIR="www/gippywebservcies.com.au/public_html" 
+          HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
+
+          # Execute rsync command
+          rsync -avz --delete \
+            -e "ssh -p 18765" \
+            "${SOURCE_DIR}" \
+            "${HOST}:${TARGET_DIR}"
+
       - name: ✅ Deployment Successful
         run: echo "Deployment to SiteGround finished!"
