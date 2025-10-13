@@ -26,22 +26,43 @@ jobs:
       #   run: npm run build
       # ----------------------------------------------------
 
-      - name: 📦 Deploy via SSH/Rsync
-        uses: easingthemes/ssh-deploy@main  # <--- CHANGED ACTION
+      # ----------------------------------------------------
+      # 1. SETUP SSH AGENT (REQUIRED for key with passphrase)
+      # ----------------------------------------------------
+      - name: Start SSH Agent and Load Key
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          # SSH details
-          SSH_PRIVATE_KEY: ${{ secrets.SG_PRIVATE_KEY }}
-          SSH_PASSPHRASE: ${{ secrets.SG_KEY_PASSPHRASE }} # Required for your SiteGround key
-          REMOTE_HOST: ${{ secrets.SG_HOST }}
-          REMOTE_USER: ${{ secrets.SG_USERNAME }}
-          REMOTE_PORT: 18765 # SiteGround's custom SSH port
+          # Use your SSH PRIVATE KEY secret
+          ssh-private-key: ${{ secrets.SG_PRIVATE_KEY }}
+          # Use your PASSPHRASE secret (SiteGround requires this)
+          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
           
-          # Deployment paths
-          SOURCE: "." 
-          TARGET: "www/gippywebservcies.com.au/public_html" 
-          
-          # rsync arguments
-          ARGS: "-avz --delete"
-          
+      # ----------------------------------------------------
+      # 2. Add SiteGround's Host Key to the runner's known hosts
+      # This prevents SSH connection prompts and failures
+      # ----------------------------------------------------
+      - name: Add SiteGround to known_hosts
+        run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
+
+      # ----------------------------------------------------
+      # 3. DEPLOY using rsync over SSH
+      # ----------------------------------------------------
+      - name: 📦 Deploy via Rsync over SSH
+        # We use a base runner command for rsync because the key is already loaded
+        run: |
+          # Define variables for clarity
+          SOURCE_DIR="./"  # Deploy all files from repo root
+          TARGET_DIR="www/gippywebservcies.com.au/public_html" 
+          HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
+
+          # Execute rsync command
+          # -avz: Archive mode, verbose, compression
+          # --delete: Deletes files on server that are not in source
+          # -e "ssh -p 18765": Specify the custom SSH port (18765)
+          rsync -avz --delete \
+            -e "ssh -p 18765" \
+            "${SOURCE_DIR}" \
+            "${HOST}:${TARGET_DIR}"
+
       - name: ✅ Deployment Successful
         run: echo "Deployment to SiteGround finished!"
