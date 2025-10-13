@@ -26,25 +26,33 @@ jobs:
       # ----------------------------------------------------
 
       # ----------------------------------------------------
-      # 1. SETUP SSH AGENT (Loads key + passphrase)
-      # This step is CRITICAL for SiteGround keys with a passphrase.
+      # 1. SETUP SSH KEY AND AGENT (FIXED to bypass passphrase errors)
+      # This script manually loads the key, piping the passphrase for authentication.
       # ----------------------------------------------------
-      - name: Start SSH Agent and Load Key
-        uses: webfactory/ssh-agent@v0.5.1 
-        with:
-          ssh-private-key: ${{ secrets.SG_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
+      - name: Setup SSH Key and Start Agent
+        run: |
+          # 1. Start the ssh-agent process
+          eval "$(ssh-agent -s)"
+          
+          # 2. Write the private key content to a file with correct permissions
+          # 'tr -d "\r"' is crucial to fix invisible Windows line ending issues
+          echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          
+          # 3. Use ssh-add to load the key, piping the passphrase for secure input
+          echo "Loading key with passphrase..."
+          echo "${{ secrets.SG_KEY_PASSPHRASE }}" | ssh-add ~/.ssh/id_rsa
           
       # ----------------------------------------------------
       # 2. Add SiteGround's Host Key to the runner's known hosts
-      # Prevents connection errors on the first attempt.
+      # Prevents "Host key verification failed" errors.
       # ----------------------------------------------------
       - name: Add SiteGround to known_hosts
         run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
 
       # ----------------------------------------------------
       # 3. DEPLOY using rsync over SSH
-      # rsync is efficient, sending only changed files.
+      # rsync is used for efficient file transfer (only sends changes).
       # ----------------------------------------------------
       - name: 📦 Deploy via Rsync over SSH
         run: |
@@ -53,9 +61,7 @@ jobs:
           TARGET_DIR="www/gippywebservcies.com.au/public_html" 
           HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
 
-          # Execute rsync command: -avz for archive mode/compression, --delete removes
-          # files on the server that don't exist in the repo.
-          # -e "ssh -p 18765" specifies SiteGround's custom port.
+          # Execute rsync command
           rsync -avz --delete \
             -e "ssh -p 18765" \
             "${SOURCE_DIR}" \
