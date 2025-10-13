@@ -1,68 +1,66 @@
 name: Deploy to SiteGround 🚀
 
 on:
-  push:
-    branches:
-      - main # Trigger the workflow on push to the main branch
+push:
+branches:
+- main # Trigger the workflow on push to the main branch
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+deploy:
+runs-on: ubuntu-latest
 
-    steps:
-      - name: ⬇️ Checkout code
-        uses: actions/checkout@v4
+steps:
+  - name: ⬇️ Checkout code
+    uses: actions/checkout@v4
 
-      # ----------------------------------------------------
-      # ⚠️ IMPORTANT: Build/Compile assets before this step
-      # If your project requires a build (e.g., React, Vue, SCSS):
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      # - name: Install Dependencies
-      #   run: npm install
-      # - name: Build Project
-      #   run: npm run build
-      # ----------------------------------------------------
+  # ----------------------------------------------------
+  # ⚠️ IMPORTANT: Build/Compile assets before this step
+  # If your project requires a build (e.g., React, Vue, SCSS):
+  # - name: Setup Node
+  #   uses: actions/setup-node@v4
+  #   with:
+  #     node-version: '20'
+  # - name: Install Dependencies
+  #   run: npm install
+  # - name: Build Project
+  #   run: npm run build
+  # ----------------------------------------------------
 
-      # ----------------------------------------------------
-      # 1. SETUP SSH AGENT (REQUIRED for key with passphrase)
-      # ----------------------------------------------------
-      - name: Start SSH Agent and Load Key
-        uses: webfactory/ssh-agent@v0.9.0
-        with:
-          # Use your SSH PRIVATE KEY secret
-          ssh-private-key: ${{ secrets.SG_PRIVATE_KEY }}
-          # Use your PASSPHRASE secret (SiteGround requires this)
-          passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
-          
-      # ----------------------------------------------------
-      # 2. Add SiteGround's Host Key to the runner's known hosts
-      # This prevents SSH connection prompts and failures
-      # ----------------------------------------------------
-      - name: Add SiteGround to known_hosts
-        run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
+  # ----------------------------------------------------
+  # 1. SETUP SSH AGENT (REQUIRED for key with passphrase)
+  # This fixes the "Enter passphrase" error by loading the key securely.
+  # ----------------------------------------------------
+  - name: Start SSH Agent and Load Key
+    # Using v0.5.1 because it correctly supports the 'passphrase' input.
+    uses: webfactory/ssh-agent@v0.5.1 
+    with:
+      ssh-private-key: ${{ secrets.SG_PRIVATE_KEY }}
+      passphrase: ${{ secrets.SG_KEY_PASSPHRASE }}
+      
+  # ----------------------------------------------------
+  # 2. Add SiteGround's Host Key to the runner's known hosts
+  # This prevents "Host key verification failed" errors.
+  # ----------------------------------------------------
+  - name: Add SiteGround to known_hosts
+    run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
 
-      # ----------------------------------------------------
-      # 3. DEPLOY using rsync over SSH
-      # ----------------------------------------------------
-      - name: 📦 Deploy via Rsync over SSH
-        # We use a base runner command for rsync because the key is already loaded
-        run: |
-          # Define variables for clarity
-          SOURCE_DIR="./"  # Deploy all files from repo root
-          TARGET_DIR="www/gippywebservcies.com.au/public_html" 
-          HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
+  # ----------------------------------------------------
+  # 3. DEPLOY using rsync over SSH
+  # rsync is used for efficient file transfer (only sends changes).
+  # ----------------------------------------------------
+  - name: 📦 Deploy via Rsync over SSH
+    run: |
+      # Define variables for clarity
+      SOURCE_DIR="./"  # Change to 'dist/' or 'build/' if you have a built project
+      TARGET_DIR="www/gippywebservcies.com.au/public_html" 
+      HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
 
-          # Execute rsync command
-          # -avz: Archive mode, verbose, compression
-          # --delete: Deletes files on server that are not in source
-          # -e "ssh -p 18765": Specify the custom SSH port (18765)
-          rsync -avz --delete \
-            -e "ssh -p 18765" \
-            "${SOURCE_DIR}" \
-            "${HOST}:${TARGET_DIR}"
+      # Execute rsync command
+      # -e "ssh -p 18765" specifies SiteGround's custom port
+      rsync -avz --delete \
+        -e "ssh -p 18765" \
+        "${SOURCE_DIR}" \
+        "${HOST}:${TARGET_DIR}"
 
-      - name: ✅ Deployment Successful
-        run: echo "Deployment to SiteGround finished!"
+  - name: ✅ Deployment Successful
+    run: echo "Deployment to SiteGround finished!"
