@@ -26,20 +26,21 @@ jobs:
       # ----------------------------------------------------
 
       # ----------------------------------------------------
-      # 1. SETUP SSH KEY AND AGENT (FIXED to bypass passphrase errors)
-      # This script manually loads the key, piping the passphrase for authentication.
+      # 1. SETUP SSH KEY AND AGENT (FIXED to create directory and handle passphrase)
       # ----------------------------------------------------
       - name: Setup SSH Key and Start Agent
         run: |
           # 1. Start the ssh-agent process
           eval "$(ssh-agent -s)"
           
-          # 2. Write the private key content to a file with correct permissions
-          # 'tr -d "\r"' is crucial to fix invisible Windows line ending issues
+          # 2. FIX: Create the .ssh directory if it doesn't exist (Fixes "No such file or directory")
+          mkdir -p ~/.ssh 
+          
+          # 3. Write the private key content to a file with correct permissions
           echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           
-          # 3. Use ssh-add to load the key, piping the passphrase for secure input
+          # 4. Use ssh-add to load the key, piping the passphrase for secure input
           echo "Loading key with passphrase..."
           echo "${{ secrets.SG_KEY_PASSPHRASE }}" | ssh-add ~/.ssh/id_rsa
           
