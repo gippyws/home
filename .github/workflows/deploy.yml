@@ -13,51 +13,29 @@ jobs:
       - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      # ----------------------------------------------------
-      # ⚠️ IMPORTANT: Uncomment and configure if your project needs building 
-      # - name: Setup Node
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: '20'
-      # - name: Install Dependencies
-      #   run: npm install
-      # - name: Build Project
-      #   run: npm run build
-      # ----------------------------------------------------
-
-      # ----------------------------------------------------
-      # 1. SETUP SSH KEY AND AGENT (PASSPHRASE-FREE FIX)
-      # ----------------------------------------------------
+      # (Steps 1 & 2 remain unchanged)
       - name: Setup SSH Key and Start Agent
         run: |
-          # 1. Start the ssh-agent process
           eval "$(ssh-agent -s)"
-          
-          # 2. Create the .ssh directory and set permissions
           mkdir -p ~/.ssh 
-          
-          # 3. Write the private key content to a file with correct permissions
           echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
-          
-          # 4. Load the passphrase-free key into the agent
           ssh-add ~/.ssh/id_rsa
           
-      # ----------------------------------------------------
-      # 2. Add SiteGround's Host Key to the runner's known hosts
-      # ----------------------------------------------------
       - name: Add SiteGround to known_hosts
         run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
 
       # ----------------------------------------------------
-      # 3. DEPLOY using rsync over SSH (FINAL PATH RESOLUTION)
+      # 3. DEPLOY using rsync over SSH (FINAL ABSOLUTE PATH FIX)
       # ----------------------------------------------------
       - name: 📦 Deploy via Rsync over SSH
         run: |
           SOURCE_DIR="./"
           
-          # 🚨 CRITICAL FIX: Use the explicit tilde (~) to force the path relative to the SSH home directory 🚨
-          TARGET_DIR="~/www/gippywebservcies.com.au/public_html" 
+          # 🚨 FINAL CRITICAL FIX: Use the ABSOLUTE path explicitly known to be correct.
+          # We force the path to start with /home/ and include the username variable
+          # to construct the full path verified via SSH.
+          TARGET_DIR="/home/${{ secrets.SG_USERNAME }}/www/gippywebservcies.com.au/public_html" 
           
           HOST="${{ secrets.SG_USERNAME }}@${{ secrets.SG_HOST }}"
 
