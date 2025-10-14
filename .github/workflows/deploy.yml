@@ -1,0 +1,48 @@
+name: Deploy to SiteGround 🚀
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: ⬇️ Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup SSH Key and Start Agent
+        run: |
+          eval "$(ssh-agent -s)"
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SG_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-add ~/.ssh/id_rsa
+
+      - name: Add SiteGround to known_hosts
+        run: ssh-keyscan -p 18765 -H ${{ secrets.SG_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📦 Deploy via Rsync over SSH
+        env:
+          SG_USER: ${{ secrets.SG_USERNAME }}
+          SG_HOST: ${{ secrets.SG_HOST }}
+        run: |
+          set -e
+          SOURCE_DIR="./"
+          TARGET_DIR="/home/${SG_USER}/www/gippywebservices.com.au/public_html"  # fixed spelling
+
+          # Ensure target dir exists (first connect and mkdir -p)
+          ssh -p 18765 -o StrictHostKeyChecking=no ${SG_USER}@${SG_HOST} "mkdir -p '${TARGET_DIR}'"
+
+          rsync -azv --delete \
+            --exclude ".git/" \
+            --exclude ".github/" \
+            --exclude ".DS_Store" \
+            --exclude "README.md" \
+            --exclude "node_modules/" \
+            -e "ssh -p 18765 -o StrictHostKeyChecking=no" \
+            "${SOURCE_DIR}" \
+            "${SG_USER}@${SG_HOST}:${TARGET_DIR}"
+
+      - name: ✅ Deployment Successful
+        run: echo "Deployment to SiteGround finished!"
